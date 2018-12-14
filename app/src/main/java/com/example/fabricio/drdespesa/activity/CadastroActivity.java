@@ -50,7 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
                     usuario = new Usuario(textoNome, textoEmail, textoSenha);
                     //Toast.makeText(CadastroActivity.this, "onClick: " + usuario,
                     //        Toast.LENGTH_SHORT).show();
-                    cadastrarUsuario();
+                    cadastrarUsuarioNoFirebaseAuth();
                 }
 
             }
@@ -90,7 +90,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
 
-    public void cadastrarUsuario () {
+    public void cadastrarUsuarioNoFirebaseAuth() {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(

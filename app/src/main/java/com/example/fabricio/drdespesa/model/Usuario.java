@@ -9,6 +9,13 @@ public class Usuario {
     public Usuario() {
     }
 
+    //Utilizado para validar login no FirebaseAuth
+    public Usuario(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+    }
+
+    //Utilizado para cadastrar o usuário no FirebaseAuth
     public Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
