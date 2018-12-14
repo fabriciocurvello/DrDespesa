@@ -1,5 +1,6 @@
 package com.example.fabricio.drdespesa.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,8 +92,11 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if ( task.isSuccessful() ) {
-                        Toast.makeText(LoginActivity.this, "Sucesso ao fazer login",
-                                Toast.LENGTH_SHORT).show();
+
+                        abrirMainActivity();
+
+                        //Toast.makeText(LoginActivity.this, "Sucesso ao fazer login",
+                        //        Toast.LENGTH_SHORT).show();
 
                     } else {
 
@@ -125,4 +129,12 @@ public class LoginActivity extends AppCompatActivity {
             });
 
         }
+
+        public void abrirMainActivity() {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+            //Encerrar esta LoginActivity
+            finish();
+        }
+
 }

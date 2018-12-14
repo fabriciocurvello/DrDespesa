@@ -100,7 +100,10 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if ( task.isSuccessful() ) {
                     Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar usuário!",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
+
+                    //Encerra esta activity, retornando à anterior da pilha, que é a IntroActivity
+                    finish();
                 } else {
 
                     //Tratamento das exceções do FirebaseAuth
