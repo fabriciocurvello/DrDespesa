@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class CadastroActivity extends AppCompatActivity {
 
@@ -99,7 +102,32 @@ public class CadastroActivity extends AppCompatActivity {
                     Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar usuário!",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(CadastroActivity.this, "Erro ao cadastrar usuário!",
+
+                    //Tratamento das exceções do FirebaseAuth
+                    String excecao = "";
+                    try {
+                        throw task.getException();
+
+                        //A senha exigida pelo FirebaseAuth deve ter pelo menos 6 dígitos
+                    } catch ( FirebaseAuthWeakPasswordException e ) {
+                        excecao = "Digite uma senha mais forte!";
+
+                        //o e-mail deve ter @ e .
+                    } catch ( FirebaseAuthInvalidCredentialsException e ) {
+                        excecao = "Digite um e-mail válido!";
+
+                        //Não é possível cadastrar o mesmo e-mail mais de uma vez
+                    } catch ( FirebaseAuthUserCollisionException e ) {
+                        excecao = "Esta conta já foi cadastrada";
+
+                        //Para demais excecões genéricas
+                    } catch (  Exception e ) {
+                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                        //printar a exceção no log
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(CadastroActivity.this, excecao,
                             Toast.LENGTH_SHORT).show();
                 }
             }
