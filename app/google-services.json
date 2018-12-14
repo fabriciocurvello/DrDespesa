@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "391776829097",
+    "firebase_url": "https://drdespesa.firebaseio.com",
+    "project_id": "drdespesa",
+    "storage_bucket": "drdespesa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391776829097:android:f3ce90514fd9298c",
+        "android_client_info": {
+          "package_name": "com.example.fabricio.drdespesa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391776829097-15hldkte5pmb5c41cmp4eht5888jfg4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fabricio.drdespesa",
+            "certificate_hash": "f6ae69be3e2d46c1c462ff7274a851c5ff3607f3"
+          }
+        },
+        {
+          "client_id": "391776829097-1u9m46fit98ckh7akj6m1295ludg58fv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7Vo_FxOqzSWPzKi2JyVwNaARUpxFNXS0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391776829097-1u9m46fit98ckh7akj6m1295ludg58fv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
