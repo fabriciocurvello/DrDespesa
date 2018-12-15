@@ -21,10 +21,9 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.ReceitasActivity" android:theme="@style/ReceitaTheme"/>
+        <activity android:name=".activity.DespesasActivity" android:theme="@style/DespesaTheme"></activity>
     </application>
 
 </manifest>
