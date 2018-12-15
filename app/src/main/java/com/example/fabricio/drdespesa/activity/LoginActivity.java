@@ -95,8 +95,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         abrirMainActivity();
 
-                        //Toast.makeText(LoginActivity.this, "Sucesso ao fazer login",
-                        //        Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login efetuado com sucesso!",
+                                Toast.LENGTH_LONG).show();
 
                     } else {
 
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         public void abrirMainActivity() {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-            //Encerrar esta LoginActivity
+            //Encerrar esta Activity
             finish();
         }
 

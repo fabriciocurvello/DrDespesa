@@ -52,6 +52,9 @@ public class IntroActivity extends AppCompatActivity {
 
     public void abrirMainActivity() {
         startActivity(new Intent(IntroActivity.this, MainActivity.class));
+
+        //Encerrar esta Activity
+        finish();
     }
 
 
