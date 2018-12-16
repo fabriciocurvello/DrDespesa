@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.fabricio.drdespesa.R;
 import com.example.fabricio.drdespesa.config.ConfiguracaoFirebase;
+import com.example.fabricio.drdespesa.helper.Base64Custom;
 import com.example.fabricio.drdespesa.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,7 +51,7 @@ public class CadastroActivity extends AppCompatActivity {
                     usuario = new Usuario(textoNome, textoEmail, textoSenha);
                     //Toast.makeText(CadastroActivity.this, "onClick: " + usuario,
                     //        Toast.LENGTH_SHORT).show();
-                    cadastrarUsuarioNoFirebaseAuth();
+                    cadastrarUsuarioNoFirebase();
                 }
 
             }
@@ -90,7 +91,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
 
-    public void cadastrarUsuarioNoFirebaseAuth() {
+    public void cadastrarUsuarioNoFirebase() {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -99,6 +100,20 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if ( task.isSuccessful() ) {
+
+                    /*
+                    Para salvar no FirebaseDatabase será utilizado o e-mail do usuário como
+                    nó identificador. O FirebaseDatabase não aceita os caracteres do e-mail
+                    como nó, por isso o e-mail será criptografado em Base64.
+                     */
+                    String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
+                    usuario.setIdUsuario( idUsuario );
+                    usuario.salvarNoFirebaseDatabase();
+
+                    Toast.makeText(CadastroActivity.this, "TESTE: " + usuario,
+                            Toast.LENGTH_LONG).show();
+
+
                     Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar usuário!",
                             Toast.LENGTH_LONG).show();
 
