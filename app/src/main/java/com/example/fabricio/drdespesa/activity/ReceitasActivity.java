@@ -65,6 +65,12 @@ public class ReceitasActivity extends AppCompatActivity {
             atualizarReceita( receitaAtualizada );
 
             movimentacao.salvarMovimentacaoNoFirebaseDatabase( data );
+
+            Toast.makeText(ReceitasActivity.this, "Receita adicionada com sucesso!",
+                    Toast.LENGTH_SHORT).show();
+
+            //encerrar esta activity
+            finish();
         }
     }
 

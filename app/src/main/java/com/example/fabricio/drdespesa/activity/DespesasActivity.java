@@ -67,6 +67,12 @@ public class DespesasActivity extends AppCompatActivity {
             atualizarDespesa( despesaAtualizada );
 
             movimentacao.salvarMovimentacaoNoFirebaseDatabase( data );
+
+            Toast.makeText(DespesasActivity.this, "Despesa adicionada com sucesso!",
+                    Toast.LENGTH_SHORT).show();
+
+            //encerrar esta activity
+            finish();
         }
     }
 

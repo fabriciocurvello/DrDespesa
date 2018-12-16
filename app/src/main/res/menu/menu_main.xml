@@ -2,9 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.jamiltondamasceno.floatingactionmenuprojeto.MainActivity">
+
+    <item
+        android:id="@+id/menuSair"
+        android:orderInCategory="100"
+        android:title="Sair"
+        app:showAsAction="never"
+        />
+
+    <!--
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Settings"
         app:showAsAction="never" />
+        -->
 </menu>

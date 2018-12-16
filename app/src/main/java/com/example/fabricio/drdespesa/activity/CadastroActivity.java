@@ -32,6 +32,9 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
+        //Alterar o título da ActionBar
+        getSupportActionBar().setTitle("Cadastro");
+
         etNome = findViewById(R.id.editNomeCadastro);
         etEmail = findViewById(R.id.editEmailCadastro);
         etSenha = findViewById(R.id.editSenhaCadastro);
