@@ -7,12 +7,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.fabricio.drdespesa.R;
 import com.example.fabricio.drdespesa.util.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MaterialCalendarView calendarView;
+    private TextView txtSaudacao, txtSaldo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        txtSaldo = findViewById(R.id.textSaldoContentMain);
+        txtSaudacao = findViewById(R.id.textSaudacaoContentMain);
+
+        calendarView = findViewById(R.id.calendarViewContentMain);
+        configuraCalendarView();
+
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -53,6 +67,20 @@ public class MainActivity extends AppCompatActivity {
         //Encerrar esta Activity
         finish();
     }
+
+    public void configuraCalendarView () {
+
+        CharSequence meses[] = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+        calendarView.setTitleMonths( meses );
+
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
