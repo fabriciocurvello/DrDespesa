@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.fabricio.drdespesa.R;
-import com.example.fabricio.drdespesa.config.ConfiguracaoFirebase;
+import com.example.fabricio.drdespesa.util.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class IntroActivity extends AppCompatActivity {

@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fabricio.drdespesa.R;
-import com.example.fabricio.drdespesa.config.ConfiguracaoFirebase;
-import com.example.fabricio.drdespesa.helper.Base64Custom;
+import com.example.fabricio.drdespesa.util.ConfiguracaoFirebase;
+import com.example.fabricio.drdespesa.util.Base64Custom;
 import com.example.fabricio.drdespesa.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -110,8 +110,8 @@ public class CadastroActivity extends AppCompatActivity {
                     usuario.setIdUsuario( idUsuario );
                     usuario.salvarNoFirebaseDatabase();
 
-                    Toast.makeText(CadastroActivity.this, "TESTE: " + usuario,
-                            Toast.LENGTH_LONG).show();
+                    //Toast.makeText(CadastroActivity.this, "TESTE: " + usuario,
+                    //        Toast.LENGTH_LONG).show();
 
 
                     Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar usuário!",

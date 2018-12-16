@@ -1,4 +1,4 @@
-package com.example.fabricio.drdespesa.config;
+package com.example.fabricio.drdespesa.util;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

@@ -55,6 +55,17 @@
             fab:fab_size="mini"
             />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_logoff"
+            android:onClick="efetuarLogoff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_adicionar_branco_24dp"
+            fab:fab_colorNormal="@color/colorPrimaryLogoff"
+            fab:fab_label="Efetuar Logoff"
+            fab:fab_size="mini"
+            />
+
 
 
     </com.github.clans.fab.FloatingActionMenu>

@@ -1,10 +1,6 @@
 package com.example.fabricio.drdespesa.model;
 
-import android.widget.Toast;
-
-import com.example.fabricio.drdespesa.activity.CadastroActivity;
-import com.example.fabricio.drdespesa.activity.IntroActivity;
-import com.example.fabricio.drdespesa.config.ConfiguracaoFirebase;
+import com.example.fabricio.drdespesa.util.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
@@ -14,6 +10,8 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private double receitaTotal = 0.0;
+    private double despesaTotal = 0.0;
 
     public Usuario() {
     }
@@ -68,6 +66,22 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public double getReceitaTotal() {
+        return receitaTotal;
+    }
+
+    public void setReceitaTotal(double receitaTotal) {
+        this.receitaTotal = receitaTotal;
+    }
+
+    public double getDespesaTotal() {
+        return despesaTotal;
+    }
+
+    public void setDespesaTotal(double despesaTotal) {
+        this.despesaTotal = despesaTotal;
     }
 
     public void salvarNoFirebaseDatabase(){
