@@ -57,7 +57,7 @@ public class DespesasActivity extends AppCompatActivity {
             movimentacao.setCategoria( etCategoria.getText().toString() );
             movimentacao.setDescricao( etDescricao.getText().toString() );
             movimentacao.setData( etData.getText().toString() );
-            movimentacao.setTipo( "d" ); // d para Despesa, r para Receita
+            movimentacao.setTipo( "r" ); // d para Despesa, r para Receita
 
             //despesaPreenchida é o valor inserido pelo usuário
             //despesaTotal é o valor que já está salvo no FirebaseDatabase
