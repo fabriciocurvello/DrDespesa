@@ -1,17 +1,21 @@
 package com.example.fabricio.drdespesa.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fabricio.drdespesa.R;
 import com.example.fabricio.drdespesa.adapter.AdapterMovimentacao;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AdapterMovimentacao adapterMovimentacao;
     private List<Movimentacao> movimentacoes = new ArrayList<>();
+    private Movimentacao movimentacao;
     private DatabaseReference movimentacaoRef; // = ConfiguracaoFirebase.getFirebaseDatabase();
     private String anoMesSelecionado;
 
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerMovimentosContentMain);
 
         configuraCalendarView();
+        swipe();
 
         //Configurar Adapter
         adapterMovimentacao = new AdapterMovimentacao( movimentacoes , this );
@@ -95,6 +101,39 @@ public class MainActivity extends AppCompatActivity {
         usuarioRef.removeEventListener( valueEventListenerUsuario );
         movimentacaoRef.removeEventListener( valueEventListenerMovimentacoes );
         // Log.i( "Evento", "EventListener foi remvido ao encerrar MainActivity.");
+    }
+
+    //Configurar o ato de deslizar um item da RecyclerView para a lateral e ter a opção de excluir
+    public void swipe(){
+
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+
+                //Inativando o drag em drop (p todos os lados)
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+
+                //Ativando o swipe (arrastar para os 2 lados)
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags( dragFlags, swipeFlags );
+            }
+
+            //Para trocar itens de posição na RecyclerView
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Log.i ("swipe", "Item foi arrastado");
+                excluirMovimentacao( viewHolder );
+            }
+        };
+
+        //Adicionando o swipe ao RecyclerView
+        new ItemTouchHelper( itemTouch ).attachToRecyclerView( recyclerView );
+
     }
 
     public void adicionarDespesa(View view) {
@@ -152,6 +191,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void atualizarSaldo() {
+
+        usuarioRef =  ConfiguracaoFirebase.getReferenciaFirebaseNoIdUsuario();
+
+        if ( movimentacao.getTipo().equals( "r" ) ) {
+            receitaTotal = receitaTotal - movimentacao.getValor();
+
+            usuarioRef.child( "receitaTotal" ).setValue( receitaTotal );
+        }
+
+        if ( movimentacao.getTipo().equals( "d" ) ) {
+            despesaTotal = despesaTotal - movimentacao.getValor();
+
+            usuarioRef.child( "despesaTotal" ).setValue( despesaTotal );
+        }
+
+    }
+
     public void recuperarMovimentacoes() {
 
         FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
@@ -174,6 +231,9 @@ public class MainActivity extends AppCompatActivity {
 
                     Movimentacao movimentacao = dados.getValue( Movimentacao.class );
                     // Log.i( "dadosRetorno", "dados: " + movimentacao.getCategoria() );
+
+                    //Recuperando a chave gerada pelo FirebaseDatabase ao salvar a movimentação
+                    movimentacao.setKey( dados.getKey() );
                     movimentacoes.add( movimentacao );
                 }
 
@@ -187,6 +247,53 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void excluirMovimentacao(final RecyclerView.ViewHolder viewHolder) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder( this );
+
+        //Configurando o AlertDialog
+        alertDialog.setTitle("Excluir Movimentação da Conta");
+        alertDialog.setMessage("Você tem certeza que deseja realmente excluir esta movimentação de sua conta?");
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                int position = viewHolder.getAdapterPosition();
+                movimentacao = movimentacoes.get( position );
+
+                FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+                String emailUsuario = autenticacao.getCurrentUser().getEmail();
+                String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+                movimentacaoRef = firebaseRef.child("movimentacao")
+                        .child( idUsuario )
+                        .child( anoMesSelecionado );
+
+                movimentacaoRef.child( movimentacao.getKey() ).removeValue();
+
+                adapterMovimentacao.notifyItemRemoved( position );
+
+                atualizarSaldo();
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                //Retornar o item movimentado para a lista
+                adapterMovimentacao.notifyDataSetChanged();
+
+                Toast.makeText( MainActivity.this, "Cancelado",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog alert = alertDialog.create();
+        alert.show();
 
     }
 

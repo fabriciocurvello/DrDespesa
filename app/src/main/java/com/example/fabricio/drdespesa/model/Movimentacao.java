@@ -13,6 +13,7 @@ public class Movimentacao {
     private String descricao;
     private String tipo;
     private double valor;
+    private String key; //Chave gerada pelo FirebaseDatabase ao salvar a movimentação
 
     public Movimentacao() {
     }
@@ -65,7 +66,15 @@ public class Movimentacao {
         this.valor = valor;
     }
 
-    public void salvarMovimentacaoNoFirebaseDatabase( String dataEscolhida ) {
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void salvarMovimentacaoNoFirebaseDatabase(String dataEscolhida ) {
 
         //Para recuperar o e-mail do usuário e codificar como idUsuario
         FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
