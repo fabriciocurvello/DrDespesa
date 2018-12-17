@@ -55,7 +55,7 @@ public class ReceitasActivity extends AppCompatActivity {
             movimentacao.setCategoria( etCategoria.getText().toString() );
             movimentacao.setDescricao( etDescricao.getText().toString() );
             movimentacao.setData( etData.getText().toString() );
-            movimentacao.setTipo( "d" ); // d para Despesa, r para Receita
+            movimentacao.setTipo( "r" ); // d para Despesa, r para Receita
 
             //receitaPreenchida é o valor inserido pelo usuário
             //receitaTotal é o valor que já está salvo no FirebaseDatabase

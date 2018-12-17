@@ -4,14 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.fabricio.drdespesa.R;
+import com.example.fabricio.drdespesa.adapter.AdapterMovimentacao;
+import com.example.fabricio.drdespesa.model.Movimentacao;
 import com.example.fabricio.drdespesa.model.Usuario;
+import com.example.fabricio.drdespesa.util.Base64Custom;
 import com.example.fabricio.drdespesa.util.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +29,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
     private double resumoUsuario = 0.0;
 
     private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+    private DatabaseReference usuarioRef;
+    private ValueEventListener valueEventListenerUsuario;
+    private ValueEventListener valueEventListenerMovimentacoes;
+
+    private RecyclerView recyclerView;
+    private AdapterMovimentacao adapterMovimentacao;
+    private List<Movimentacao> movimentacoes = new ArrayList<>();
+    private DatabaseReference movimentacaoRef; // = ConfiguracaoFirebase.getFirebaseDatabase();
+    private String anoMesSelecionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +61,40 @@ public class MainActivity extends AppCompatActivity {
 
         txtSaldo = findViewById(R.id.textSaldoContentMain);
         txtSaudacao = findViewById(R.id.textSaudacaoContentMain);
-
         calendarView = findViewById(R.id.calendarViewContentMain);
+        recyclerView = findViewById(R.id.recyclerMovimentosContentMain);
+
         configuraCalendarView();
 
+        //Configurar Adapter
+        adapterMovimentacao = new AdapterMovimentacao( movimentacoes , this );
+
+        //Configurar RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
+        recyclerView.setLayoutManager( layoutManager );
+        recyclerView.setHasFixedSize( true );
+        recyclerView.setAdapter( adapterMovimentacao );
+
+    }
+
+    //Acionado quando a Activity é iniciada ou reiniciada
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         recuperarResumo();
+        recuperarMovimentacoes();
+    }
 
+    //Acionado quando a Activity é encerrada
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
+        //Para desativar o Listener do Firebase quando esta activity for encerrada
+        usuarioRef.removeEventListener( valueEventListenerUsuario );
+        movimentacaoRef.removeEventListener( valueEventListenerMovimentacoes );
+        // Log.i( "Evento", "EventListener foi remvido ao encerrar MainActivity.");
     }
 
     public void adicionarDespesa(View view) {
@@ -93,17 +127,74 @@ public class MainActivity extends AppCompatActivity {
         CharSequence meses[] = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
         calendarView.setTitleMonths( meses );
 
+        CalendarDay dataAtual = calendarView.getCurrentDate();
+        //formatar os números dos meses sempre com 2 dígitos
+        String mesSelecionado = String.format("%02d", (dataAtual.getMonth() + 1));
+        anoMesSelecionado = dataAtual.getYear() + "" + mesSelecionado;
+
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
-            public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
+            public void onMonthChanged(MaterialCalendarView materialCalendarView, CalendarDay date) {
 
+                String mesSelecionado = String.format("%02d", (date.getMonth() + 1));
+                anoMesSelecionado = date.getYear() + "" + mesSelecionado;
+                // Log.i( "MES", "mes: " + anoMesSelecionado );
+
+                /*
+                A cada mês que o usuário mudar será necessário recuperar as movientações.
+                Só que o método recuperarMovimentacoes() cria um listener, então,
+                para não ficar acumulando Listeners a cada mês selecionado,
+                será necessário remover o Listener anterior.
+                 */
+                movimentacaoRef.removeEventListener( valueEventListenerMovimentacoes );
+                recuperarMovimentacoes();
             }
         });
     }
 
+    public void recuperarMovimentacoes() {
+
+        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        movimentacaoRef = firebaseRef.child("movimentacao")
+                                     .child( idUsuario )
+                                     .child( anoMesSelecionado );
+
+        //Log.i( "MES INICIO", "mes: " + anoMesSelecionado );
+
+        valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                movimentacoes.clear();
+                //Pata percorrer todos os filhos do anomes
+                for ( DataSnapshot dados: dataSnapshot.getChildren() ) {
+                    //Log.i( "dados", "retorno: " + dados.toString() );
+
+                    Movimentacao movimentacao = dados.getValue( Movimentacao.class );
+                    // Log.i( "dadosRetorno", "dados: " + movimentacao.getCategoria() );
+                    movimentacoes.add( movimentacao );
+                }
+
+                //notificar que os dados foram atualizados
+                adapterMovimentacao.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     public void recuperarResumo() {
-       DatabaseReference usuarioRef =  ConfiguracaoFirebase.getReferenciaFirebaseNoIdUsuario();
-       usuarioRef.addValueEventListener(new ValueEventListener() {
+       usuarioRef =  ConfiguracaoFirebase.getReferenciaFirebaseNoIdUsuario();
+
+        // Log.i( "Evento", "EventListener foi adicionado para recuperarResumo em MainActivity.");
+       valueEventListenerUsuario = usuarioRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                Usuario usuario = dataSnapshot.getValue( Usuario.class );
@@ -157,5 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }
