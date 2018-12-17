@@ -1,10 +1,12 @@
 package com.example.fabricio.drdespesa.activity;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -45,6 +47,15 @@ public class DespesasActivity extends AppCompatActivity {
         etData.setText( DateCustom.dataAtual() );
 
         recuperarDespesaTotal();
+
+        etData.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if ( b = false ) {
+                    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(etData.getWindowToken(), 0);
+                }
+            }
+        });
 
     }
 

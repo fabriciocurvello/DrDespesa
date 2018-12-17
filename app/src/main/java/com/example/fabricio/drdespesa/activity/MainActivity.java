@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -224,6 +225,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                if ( dataSnapshot == null || !dataSnapshot.exists() ) {
+                    Toast.makeText( MainActivity.this, "Nenhuma movimentação\nregistrada neste mês.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
                 movimentacoes.clear();
                 //Pata percorrer todos os filhos do anomes
                 for ( DataSnapshot dados: dataSnapshot.getChildren() ) {
@@ -277,6 +283,9 @@ public class MainActivity extends AppCompatActivity {
                 adapterMovimentacao.notifyItemRemoved( position );
 
                 atualizarSaldo();
+
+                Toast.makeText( MainActivity.this, "Movimentação excluída",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
