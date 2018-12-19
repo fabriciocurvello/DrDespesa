@@ -71,24 +71,32 @@ public class CadastroActivity extends AppCompatActivity {
                     if ( senha.length() >= 8 ) {
                         return true;
                     } else {
-                        Toast.makeText(CadastroActivity.this, "Senha precisa ter pelo menos 8 caracteres!",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(CadastroActivity.this, "Senha precisa ter pelo menos 8 caracteres!",
+                        //        Toast.LENGTH_SHORT).show();
+
+                        etSenha.setError("Senha precisa ter pelo menos 8 caracteres");
                         return false;
                     }
 
                 } else {
-                    Toast.makeText(CadastroActivity.this, "Preencha a senha!",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CadastroActivity.this, "Preencha a senha!",
+                    //        Toast.LENGTH_SHORT).show();
+
+                    etSenha.setError("Preencha a senha!");
                     return false;
                 }
             } else {
-                Toast.makeText(CadastroActivity.this, "Preencha o e-mail!",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CadastroActivity.this, "Preencha o e-mail!",
+                //        Toast.LENGTH_SHORT).show();
+
+                etEmail.setError("Preencha o e-mail!");
                 return false;
             }
         } else {
-            Toast.makeText(CadastroActivity.this, "Preencha o nome!",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(CadastroActivity.this, "Preencha o nome!",
+            //        Toast.LENGTH_SHORT).show();
+
+            etNome.setError("Preencha o nome!");
             return false;
         }
 
@@ -106,7 +114,7 @@ public class CadastroActivity extends AppCompatActivity {
 
                     /*
                     Para salvar no FirebaseDatabase será utilizado o e-mail do usuário como
-                    nó identificador. O FirebaseDatabase não aceita os caracteres do e-mail
+                    nó identificador. O FirebaseDatabase não aceita os caracteres de e-mail
                     como nó, por isso o e-mail será criptografado em Base64.
                      */
                     String idUsuario = Base64Custom.codificarBase64( usuario.getEmail() );
@@ -133,13 +141,19 @@ public class CadastroActivity extends AppCompatActivity {
                     } catch ( FirebaseAuthWeakPasswordException e ) {
                         excecao = "Digite uma senha mais forte!";
 
+                        etSenha.setError("Digite uma senha mais forte!");
+
                         //o e-mail deve ter @ e .
                     } catch ( FirebaseAuthInvalidCredentialsException e ) {
                         excecao = "Digite um e-mail válido!";
 
+                        etEmail.setError("Digite um e-mail válido!");
+
                         //Não é possível cadastrar o mesmo e-mail mais de uma vez
                     } catch ( FirebaseAuthUserCollisionException e ) {
                         excecao = "Esta conta já foi cadastrada";
+
+                        etEmail.setError("Esta conta já foi cadastrada");
 
                         //Para demais excecões genéricas
                     } catch (  Exception e ) {

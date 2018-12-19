@@ -102,15 +102,19 @@ public class DespesasActivity extends AppCompatActivity {
                         return true;
                     } else {
                         mensagem = "Necessário inserir descrição";
+                        etDescricao.setError("Necessário inserir descrição");
                     }
                 } else {
                     mensagem = "Necessário inserir categoria";
+                    etCategoria.setError("Necessário inserir categoria");
                 }
             } else {
                 mensagem = "Necessário inserir data";
+                etData.setError("Necessário inserir data");
             }
         } else {
             mensagem = "Necessário inserir valor";
+            etValor.setError("Necessário inserir valor");
         }
 
         Toast.makeText(DespesasActivity.this, mensagem,

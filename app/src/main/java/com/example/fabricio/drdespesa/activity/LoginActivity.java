@@ -62,19 +62,25 @@ public class LoginActivity extends AppCompatActivity {
                     if ( senha.length() >= 8 ) {
                         return true;
                     } else {
-                        Toast.makeText(LoginActivity.this, "Senha precisa ter pelo menos 8 caracteres!",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "Senha precisa ter pelo menos 8 caracteres!",
+                        //        Toast.LENGTH_SHORT).show();
+
+                        etSenha.setError("Senha precisa ter pelo menos 8 caracteres!");
                         return false;
                     }
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Preencha a senha!",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Preencha a senha!",
+                    //        Toast.LENGTH_SHORT).show();
+
+                    etSenha.setError("Preencha a senha!");
                     return false;
                 }
             } else {
-                Toast.makeText(LoginActivity.this, "Preencha o e-mail!",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "Preencha o e-mail!",
+                //        Toast.LENGTH_SHORT).show();
+
+                etEmail.setError("Preencha o e-mail!");
                 return false;
             }
         }
@@ -108,9 +114,13 @@ public class LoginActivity extends AppCompatActivity {
                         } catch ( FirebaseAuthInvalidUserException e ) {
                             excecao = "Usuário não está cadastrado.";
 
+                            etEmail.setError("Este e-mail não está cadastrado.");
+
                             //Verifica se a senha digitada está correta
                         } catch ( FirebaseAuthInvalidCredentialsException e ) {
                             excecao = "E-mail e/ou senha não correspondem a um usuário cadastrado.";
+
+                            etEmail.setError("E-mail e/ou senha não correspondem a um usuário cadastrado.");
 
                             //Para demais excecões genéricas
                         } catch (  Exception e ) {
