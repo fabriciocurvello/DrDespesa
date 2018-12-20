@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.DetalheActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textValorDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor"    />
+
+        <TextView
+            android:id="@+id/textDataDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data"    />
+
+        <TextView
+            android:id="@+id/textCategoriaDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categoria"    />
+
+        <TextView
+            android:id="@+id/textDescricaoDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descrição"    />
+
+        <TextView
+            android:id="@+id/textTipoDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo"    />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

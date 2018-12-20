@@ -40,7 +40,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
-    private TextView txtSaudacao, txtSaldo;
+    private TextView txtSaudacao, txtSaldo, txtEmpty;
     private double despesaTotal = 0.0;
     private double receitaTotal = 0.0;
     private double resumoUsuario = 0.0;
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference movimentacaoRef; // = ConfiguracaoFirebase.getFirebaseDatabase();
     private String anoMesSelecionado;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         txtSaudacao = findViewById(R.id.textSaudacaoContentMain);
         calendarView = findViewById(R.id.calendarViewContentMain);
         recyclerView = findViewById(R.id.recyclerMovimentosContentMain);
+        txtEmpty = findViewById(R.id.emptyContentMain);
 
         configuraCalendarView();
         swipe();
@@ -226,8 +228,13 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if ( dataSnapshot == null || !dataSnapshot.exists() ) {
-                    Toast.makeText( MainActivity.this, "Nenhuma movimentação\nregistrada neste mês.",
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText( MainActivity.this, "Nenhuma movimentação\nregistrada neste mês.",
+//                            Toast.LENGTH_SHORT).show();
+
+
+                    txtEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 movimentacoes.clear();
