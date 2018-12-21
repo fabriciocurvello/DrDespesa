@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fabricio.drdespesa.OnCardClickListener;
 import com.example.fabricio.drdespesa.R;
 import com.example.fabricio.drdespesa.adapter.AdapterMovimentacao;
 import com.example.fabricio.drdespesa.model.Movimentacao;
@@ -37,7 +38,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private MaterialCalendarView calendarView;
     private TextView txtSaudacao, txtSaldo, txtEmpty;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private Movimentacao movimentacao;
     private DatabaseReference movimentacaoRef; // = ConfiguracaoFirebase.getFirebaseDatabase();
     private String anoMesSelecionado;
+
+
 
 
     @Override
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Configurar Adapter
         adapterMovimentacao = new AdapterMovimentacao( movimentacoes , this );
+
+       // adapterMovimentacao.setOnCardClickListener (movimentacoes)
 
         //Configurar RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
@@ -372,5 +377,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void startNewActivityWithObject(Movimentacao movimentacao) {
+        //Inicia activity nova aqui
+
+        Intent intent = new Intent(MainActivity.this,DetalheActivity.class);
+        intent.putExtra("movimentacao", movimentacao);
+
+
+        startActivity(intent);
+
+        Toast.makeText(this, movimentacao.getDescricao(),
+                Toast.LENGTH_SHORT).show();
+    }
 
 }

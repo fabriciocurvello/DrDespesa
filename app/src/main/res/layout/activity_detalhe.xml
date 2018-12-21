@@ -19,34 +19,51 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textTipoDetalhe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:text="Tipo"
+            android:textColor="@android:color/white"
+            tools:layout_editor_absoluteX="178dp"
+            tools:layout_editor_absoluteY="195dp" />
+
+        <TextView
             android:id="@+id/textValorDetalhe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Valor"    />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:text="Valor"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/textDataDetalhe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Data"    />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:text="Data"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/textCategoriaDetalhe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Categoria"    />
+            android:layout_gravity="center_horizontal"
+            android:text="Categoria"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textDescricaoDetalhe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Descrição"    />
-
-        <TextView
-            android:id="@+id/textTipoDetalhe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tipo"    />
+            android:layout_gravity="center_horizontal"
+            android:text="Descrição"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

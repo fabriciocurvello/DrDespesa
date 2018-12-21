@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.fabricio.drdespesa.R;
+import com.example.fabricio.drdespesa.activity.MainActivity;
 import com.example.fabricio.drdespesa.model.Movimentacao;
 
 import java.util.List;
@@ -17,9 +18,18 @@ public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentaca
     List<Movimentacao> movimentacoes;
     Context context;
 
-    public AdapterMovimentacao(List<Movimentacao> movimentacoes, Context context) {
-        this.movimentacoes = movimentacoes;
-        this.context = context;
+    MainActivity mainActivity;
+
+//    public AdapterMovimentacao(List<Movimentacao> movimentacoes, Context context) {
+//        this.movimentacoes = movimentacoes;
+//        this.context = context;
+//    }
+
+    public AdapterMovimentacao( List<Movimentacao> movimentacoes, MainActivity mainActivity) {
+       this.movimentacoes = movimentacoes;
+       context = mainActivity;
+       this.mainActivity = mainActivity;
+
     }
 
     @Override
@@ -62,6 +72,19 @@ public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentaca
             titulo = itemView.findViewById(R.id.textAdapterTitulo);
             valor = itemView.findViewById(R.id.textAdapterValor);
             categoria = itemView.findViewById(R.id.textAdapterCategoria);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int index = getAdapterPosition();
+                    Movimentacao movimentacao = movimentacoes.get(index);
+
+                    //delegar para outro componente
+                    mainActivity.startNewActivityWithObject(movimentacao);
+
+                }
+            });
         }
 
     }
